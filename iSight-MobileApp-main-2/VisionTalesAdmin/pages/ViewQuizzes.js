@@ -11,7 +11,7 @@ const ViewQuizzes = ({ navigation }) => {
 
   async function getQuizzes() {
     try {
-      const response = await fetch('https://2jwoowlka2.execute-api.us-east-1.amazonaws.com/quizzes/titles');
+      const response = await fetch("https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/titles");
       const json = await response.json();
       setFlatListItems(json.Items);
       console.log("made call");
@@ -23,7 +23,7 @@ const ViewQuizzes = ({ navigation }) => {
 
   async function getQuizTitle(title) {
     try {
-      const response = await fetch(`https://2jwoowlka2.execute-api.us-east-1.amazonaws.com/quizzes/${title}`);
+      const response = await fetch(`https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/quizzes/${title}`);
       const json = await response.json();
       const quiz = json.Item;
 
@@ -40,7 +40,7 @@ const ViewQuizzes = ({ navigation }) => {
   }
 
   async function deleteQuizTitle(title) {
-    await fetch(`https://2jwoowlka2.execute-api.us-east-1.amazonaws.com/quizzes/${title}`, {
+    await fetch(`https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/quizzes/${title}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',

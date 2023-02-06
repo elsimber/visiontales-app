@@ -6,10 +6,8 @@ import * as SQLite from "expo-sqlite";
 import { useIsFocused } from "@react-navigation/native";
 
 var db = SQLite.openDatabase("VisionTalesDB.db");
-
 const HomeScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
-
   // demoInfoFilled is to check if demographic info is filled up
   const [demoInfoFilled, setDemoInfoFilled] = useState(0);
 
@@ -26,7 +24,7 @@ const HomeScreen = ({ navigation }) => {
   async function getVideos() {
     try {
       const response = await fetch(
-        "https://2jwoowlka2.execute-api.us-east-1.amazonaws.com/videos"
+        "https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/videos"
       );
       const json = await response.json();
       videoData = json;
@@ -62,21 +60,21 @@ const HomeScreen = ({ navigation }) => {
     });
 
     // Insert videos pulled from server into local database
-    for (let i = 0; i < videoData.Items.length; i++) {
+    for (let i = 0; i < videoData.length; i++) {
       db.transaction(function (txn) {
         // Insert into video table video data:
         txn.executeSql(
           "INSERT INTO table_video (title, topic, url, yt_id) VALUES (?,?,?,?)",
           [
-            videoData.Items[i].title,
-            videoData.Items[i].topic,
-            videoData.Items[i].yt_url,
-            videoData.Items[i].video_id,
+            videoData[i].title,
+            videoData[i].topic,
+            videoData[i].yt_url,
+            videoData[i].video_id,
           ],
           (txn, results) => {
             if (results.rowsAffected > 0) {
               console.log(results.insertId + " Video uploaded!");
-              videoIdMap.set(videoData.Items[i].title, results.insertId);
+              videoIdMap.set(videoData[i].title, results.insertId);
             } else {
               alert("Upload Failed");
             }
@@ -210,31 +208,31 @@ const HomeScreen = ({ navigation }) => {
     db.transaction(function (txn) {
       // Insert quizzes, choices, and answers into local DB from server DB
       // Insert quizzes from server into local DB
-      if (videoData.Items) {
-        for (let i = 0; i < videoData.Items.length; i++) {
+      if (videoData) {
+        for (let i = 0; i < videoData.length; i++) {
           // If the quiz object isn't empty:
-          if (videoData.Items[i].quiz) {
+          if (videoData[i].quiz) {
             txn.executeSql(
               "INSERT INTO table_quiz (title, video_id) VALUES (?,?)",
               [
-                videoData.Items[i].title + ` Quiz`,
-                videoIdMap.get(videoData.Items[i].title),
+                videoData[i].title + ` Quiz`,
+                videoIdMap.get(videoData[i].title),
               ],
               (txn, resultsQuiz) => {
                 if (resultsQuiz.rowsAffected > 0) {
                   console.log(resultsQuiz.insertId + " Quiz downloaded!");
 
                   // If the questions object in quiz isn't empty
-                  if (videoData.Items[i].quiz.questions) {
+                  if (videoData[i].quiz.questions) {
                     for (
                       let j = 0;
-                      j < videoData.Items[i].quiz.questions.length;
+                      j < videoData[i].quiz.questions.length;
                       j++
                     ) {
                       txn.executeSql(
                         "INSERT INTO table_question (content, quiz_id) VALUES (?, ?)",
                         [
-                          videoData.Items[i].quiz.questions[j],
+                          videoData[i].quiz.questions[j],
                           resultsQuiz.insertId,
                         ],
                         (txn, resultsQuestion) => {
@@ -242,20 +240,20 @@ const HomeScreen = ({ navigation }) => {
                           if (resultsQuestion.rowsAffected > 0) {
                             for (
                               let k = 0;
-                              k < videoData.Items[i].quiz.choices.length;
+                              k < videoData[i].quiz.choices.length;
                               k++
                             ) {
                               txn.executeSql(
                                 "INSERT INTO table_question_choice (choice_content, isAnswer, question_id) VALUES (?, ?, ?)",
                                 [
-                                  videoData.Items[i].quiz.choices[j][k],
-                                  videoData.Items[i].quiz.correct[j][k],
+                                  videoData[i].quiz.choices[j][k],
+                                  videoData[i].quiz.correct[j][k],
                                   resultsQuestion.insertId,
                                 ],
                                 (txn, resultsChoice) => {
                                   if (resultsChoice.rowsAffected > 0) {
                                     console.log(
-                                      videoData.Items[i].quiz.choices[j][k] +
+                                      videoData[i].quiz.choices[j][k] +
                                         " downloaded successfully!"
                                     );
                                   } else {

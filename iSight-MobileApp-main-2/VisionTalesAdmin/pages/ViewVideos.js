@@ -22,11 +22,11 @@ const ViewVideos = ({ route, navigation }) => {
   async function getQuiz(yt_id) {
     try {
       const response = await fetch(
-        `https://2jwoowlka2.execute-api.us-east-1.amazonaws.com/videos/${yt_id}`
+        `https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/videos/${yt_id}`
       );
       const json = await response.json();
-      const videoQuiz = json.Item;
-
+      const videoQuiz = json;
+      console.log("This is the id " + yt_id);
       questions = videoQuiz.quiz.questions;
       choices = videoQuiz.quiz.choices;
       correct = videoQuiz.quiz.correct;
@@ -83,7 +83,6 @@ const ViewVideos = ({ route, navigation }) => {
       />
     );
   };
-
   let listItemView = (item) => {
     console.log(item.video_id);
     return (
@@ -94,7 +93,7 @@ const ViewVideos = ({ route, navigation }) => {
 	<MainText text={item.title} />
         <YoutubePlayer 
 	  height={300} 
-	  play={false} 
+	  play={false}
 	  videoId={item.yt_id}
 	  onChangeState={e => takeQuiz(e, item.yt_id)}
 	/>
