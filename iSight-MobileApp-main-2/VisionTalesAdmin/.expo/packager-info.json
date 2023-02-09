@@ -1,9 +1,9 @@
 {
   "expoServerPort": null,
-  "packagerPort": null,
+  "packagerPort": 19000,
   "webpackServerPort": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://jt-qg6.anonymous.visiontalesadmin.exp.direct",
+  "packagerNgrokUrl": "https://jt-qg6.anonymous.visiontalesadmin.exp.direct",
+  "ngrokPid": 8282,
   "packagerPid": null
 }

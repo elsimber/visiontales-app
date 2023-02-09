@@ -146,7 +146,7 @@ const AddQuiz = ({ navigation }) => {
       }
     }
 
-    fetch('https://2jwoowlka2.execute-api.us-east-1.amazonaws.com/quizzes', {
+    fetch("https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/quizzes", {
       method: 'PUT',
       headers: {
         Accept: 'application/json',
