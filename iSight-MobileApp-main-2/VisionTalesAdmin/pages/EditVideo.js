@@ -60,8 +60,11 @@ const EditVideo = ({ navigation, route }) => {
     }
 
     db.transaction((tx) => {
-      console.log("|." + video_id);
-
+      console.log("here" + videoYtId);
+      console.log(videoYtId);
+      console.log(videoTitle);
+      console.log(videoTopic);
+      console.log(videoURL);
       
 
       // Execute local change
@@ -69,11 +72,9 @@ const EditVideo = ({ navigation, route }) => {
         "UPDATE table_video set title=?, topic=? , url=?, yt_id=? where video_id=?",
         [videoTitle, videoTopic, videoURL, videoYtId, video_id],
         (tx, results) => {
-          console.log("2");
-          console.log("Results", results.rowsAffected);
           if (results.rowsAffected > 0) {
             //Push change to AWS database
-            fetch('https://2jwoowlka2.execute-api.us-east-1.amazonaws.com/videos', {
+            fetch("https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/videos", {
               method: 'PUT',
               headers: {
                 Accept: 'application/json',
