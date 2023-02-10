@@ -72,7 +72,7 @@ const DemographicQuiz = ({ navigation, route }) => {
                     let temp = data;
                     temp.push(key)
                     setData(temp)
-console.log(qNum);
+
                     // If we answered the last question
                     if (qNum >= choices.length - 1) {
 			    console.log("working");
@@ -87,7 +87,7 @@ console.log(qNum);
                           'UPDATE table_demographics SET location=?, gender=?, age=? WHERE d_id=1',
                           [uLocation, choices[0][data[0]], choices[1][data[1]]],
                           (txn, results) => {
-                            console.log('Results', results.rowsAffected);
+                            
                             if (results.rowsAffected > 0) {
                               Alert.alert(
                                 'Thank You!',

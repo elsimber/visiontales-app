@@ -22,11 +22,15 @@ const ViewVideos = ({ route, navigation }) => {
   async function getQuiz(yt_id) {
     try {
       const response = await fetch(
-        `https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/videos/${yt_id}`
+        "https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/videos"
       );
       const json = await response.json();
-      const videoQuiz = json;
-      console.log("This is the id " + yt_id);
+      var videoQuiz = null;
+      for (let i = 0; i < json.length; i++) {
+        if(json[i].video_id == yt_id){
+          videoQuiz = json[i];
+        }
+      }
       questions = videoQuiz.quiz.questions;
       choices = videoQuiz.quiz.choices;
       correct = videoQuiz.quiz.correct;
@@ -58,11 +62,10 @@ const ViewVideos = ({ route, navigation }) => {
         "SELECT * FROM table_video WHERE topic=?",
         [topic],
         (tx, results) => {
-          console.log("Results: ", results.rows);
           var temp = [];
           for (let i = 0; i < results.rows.length; ++i)
             temp.push(results.rows.item(i));
-          console.log(temp);
+          
           setFlatListItems(temp);
         },
         (tx, errors) => {
@@ -84,7 +87,6 @@ const ViewVideos = ({ route, navigation }) => {
     );
   };
   let listItemView = (item) => {
-    console.log(item.video_id);
     return (
       <View
         key={item.video_id}

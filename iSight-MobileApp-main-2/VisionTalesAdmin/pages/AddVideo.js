@@ -186,12 +186,10 @@ const AddVideo = ({ navigation }) => {
       .then(response => response.json())
       .then((data) => {
         db.transaction(function (txn) {
-          console.log('1');
           txn.executeSql(
             'INSERT INTO table_video (title, topic, url, yt_id) VALUES (?,?,?,?)',
             [videoTitle, videoTopic, videoURL, videoURL.substring(videoURL.length - 11, videoURL.length)],
             (txn, results) => {
-              console.log('Results', results.rowsAffected);
               if (results.rowsAffected > 0) {
                 Alert.alert(
                   'Success',
@@ -205,7 +203,7 @@ const AddVideo = ({ navigation }) => {
                   { cancelable: false }
                 );
               } else {
-                console.log('3');
+                
                 alert('Local Upload Failed');
               }
             }

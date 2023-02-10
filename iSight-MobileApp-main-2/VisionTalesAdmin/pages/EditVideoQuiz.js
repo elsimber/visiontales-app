@@ -146,7 +146,7 @@ const EditVideoQuiz = ({ route, navigation }) => {
       }
     }
 
-    fetch("https://2jwoowlka2.execute-api.us-east-1.amazonaws.com/videos", {
+    fetch("https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/videos", {
       method: "PUT",
       headers: {
         Accept: "application/json",

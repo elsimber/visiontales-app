@@ -36,7 +36,6 @@ const ViewTopics = ({ navigation }) => {
   };
 
   let listItemView = (item) => {
-    console.log(item);
     return (
       <View key={item.topic} style={{ backgroundColor: "#dbb42b", padding: 20 }}>
         <NavButton

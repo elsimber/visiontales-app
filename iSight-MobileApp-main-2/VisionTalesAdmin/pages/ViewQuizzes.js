@@ -13,8 +13,8 @@ const ViewQuizzes = ({ navigation }) => {
     try {
       const response = await fetch("https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/titles");
       const json = await response.json();
-      setFlatListItems(json.Items);
-      console.log("made call");
+      setFlatListItems(json);
+      console.log("here", setFlatListItems);
     } 
     catch (error) {
       console.log(error);
@@ -26,7 +26,7 @@ const ViewQuizzes = ({ navigation }) => {
       const response = await fetch(`https://9ncfhn4qea.execute-api.us-east-2.amazonaws.com/quizzes/${title}`);
       const json = await response.json();
       const quiz = json.Item;
-
+      
       quizTitle = quiz.title;
       questions = quiz.questions;
       choices = quiz.choices;

@@ -28,23 +28,19 @@ const HomeScreen = ({ navigation }) => {
       );
       const json = await response.json();
       videoData = json;
-      console.log("made call");
       await loadDatabase();
-      console.log("database loaded");
     } catch (error) {
       console.log(error);
     }
   }
 
   async function loadDatabase() {
-    console.log("loading db");
     db.transaction(function (txn) {
       // Begin creating Video Table
       txn.executeSql(
         "SELECT name FROM sqlite_master WHERE type='table' AND name='table_video'",
         [],
         function (tx, res) {
-          console.log("video item:", res.rows.length);
           if (res.rows.length >= 0) {
             txn.executeSql("DROP TABLE IF EXISTS table_video", []);
             txn.executeSql(
@@ -73,7 +69,6 @@ const HomeScreen = ({ navigation }) => {
           ],
           (txn, results) => {
             if (results.rowsAffected > 0) {
-              console.log(results.insertId + " Video uploaded!");
               videoIdMap.set(videoData[i].title, results.insertId);
             } else {
               alert("Upload Failed");
@@ -90,13 +85,11 @@ const HomeScreen = ({ navigation }) => {
         "SELECT name FROM sqlite_master WHERE type='table' AND name='table_demographics'",
         [],
         function (tx, res) {
-          console.log("demographic item:", res.rows.length);
           if (res.rows.length == 0) {
             txn.executeSql(
               "CREATE TABLE IF NOT EXISTS table_demographics(d_id INTEGER PRIMARY KEY, location VARCHAR(50), gender VARCHAR(20), age VARCHAR(255))",
               [],
               (txn, res) => {
-                console.log(res.rows);
               },
               (txn, error) => {
                 console.log(error);
@@ -113,13 +106,11 @@ const HomeScreen = ({ navigation }) => {
         "SELECT d_id FROM table_demographics WHERE d_id=1",
         [],
         function (tx, res) {
-          console.log("demographic item:", res.rows.length);
           if (res.rows.length == 0) {
             txn.executeSql(
               "INSERT INTO table_demographics (d_id, location, gender, age) VALUES(1,'NA','NA','NA')",
               [],
-              (txn, res) => {
-                console.log(res.rows);
+              (txn, res) => {;
               },
               (txn, error) => {
                 console.log(error);
@@ -136,18 +127,17 @@ const HomeScreen = ({ navigation }) => {
         "SELECT name FROM sqlite_master WHERE type='table' AND name='table_quiz'",
         [],
         function (txn, res) {
-          console.log("quiz item:", res.rows.length);
           if (res.rows.length >= 0) {
-            console.log("going into quiz table drop");
+        
             txn.executeSql(
               "DROP TABLE IF EXISTS table_quiz",
               [],
               (txn, res) => {
-                console.log("quiz table dropped");
+                
               },
               (txn, error) => {
                 console.log(error);
-                console.log("quiz table drop error");
+                
               }
             );
             // txn.executeSql("PRAGMA foreign_keys = ON");
@@ -155,11 +145,11 @@ const HomeScreen = ({ navigation }) => {
               "CREATE TABLE IF NOT EXISTS table_quiz(quiz_id INTEGER PRIMARY KEY AUTOINCREMENT, title VARCHAR(20), video_id INTEGER NOT NULL, FOREIGN KEY (video_id) REFERENCES table_video (video_id))",
               [],
               (txn, response) => {
-                console.log("created table quiz!!");
+                
               },
               (txn, error) => {
                 console.log(error);
-                console.log("error in creating quiz table!!");
+                
               }
             );
           }
@@ -173,7 +163,6 @@ const HomeScreen = ({ navigation }) => {
         "SELECT name FROM sqlite_master WHERE type='table' AND name='table_question'",
         [],
         function (txn, res) {
-          console.log("question item:", res.rows.length);
           if (res.rows.length >= 0) {
             txn.executeSql("DROP TABLE IF EXISTS table_question", []);
             // , ,
@@ -192,7 +181,7 @@ const HomeScreen = ({ navigation }) => {
         "SELECT name FROM sqlite_master WHERE type='table' AND name='table_question_choice'",
         [],
         function (tx, res) {
-          console.log("question choice item:", res.rows.length);
+          
           if (res.rows.length >= 0) {
             txn.executeSql("DROP TABLE IF EXISTS table_question_choice", []);
             // isAnswer: 0 means false/ 1 means true
@@ -220,7 +209,7 @@ const HomeScreen = ({ navigation }) => {
               ],
               (txn, resultsQuiz) => {
                 if (resultsQuiz.rowsAffected > 0) {
-                  console.log(resultsQuiz.insertId + " Quiz downloaded!");
+                  
 
                   // If the questions object in quiz isn't empty
                   if (videoData[i].quiz.questions) {
@@ -284,7 +273,7 @@ const HomeScreen = ({ navigation }) => {
     // const [demoInfoFilled, setDemoInfoFilled] = useState();
     console.log("---------- BEGIN --------------");
     await getVideos();
-    console.log("demographic data");
+    
 
     // Test for quiz input
     db.transaction(function (txn) {
@@ -292,9 +281,6 @@ const HomeScreen = ({ navigation }) => {
         "SELECT * from table_demographics",
         [],
         (txn, result) => {
-          console.log(result.rows);
-          console.log("demographic row count: ");
-          console.log(result.rows.length);
           if (result.rows.length > 0) {
             // if demographic info is filled up, the user would only able to change their profile
             setDemoInfoFilled(1);
